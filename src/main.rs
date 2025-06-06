@@ -1,49 +1,55 @@
 
 fn main() {
-    let nums = vec![9,9,9];
-    let a = Solution::plus_one(nums);
-    println!("a: {a:?}");
+    let mut nums1 = vec![4,5,6,0,0,0];
+    let mut nums2 = vec![1,2,3];
+    Solution::merge(&mut nums1,3, &mut nums2,3);
+    println!("nums1: {nums1:?}");
 
 }
+// 3,8,9,5,0,0
+// j     k
+// 3,8,9,5,0,0
+//   j   k
+// 3,5,9,8,0,0
+//   j   k
+// 3,5,9,8,0,0
+//     j k
+//     8 9,0,0
+//       j
+// 
+
 struct Solution;
 
 impl Solution {
-    pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
-        let mut p = digits.len() - 1;
-        let mut num = digits[p];
-        let mut tens = 0;
-        num += 1;
-        if num >= 10 {
-            num = 0;
-            tens = 1;
+    pub fn merge(
+        nums1: &mut Vec<i32>,
+        m: i32,
+        nums2: &mut Vec<i32>,
+        n: i32
+    ) {
+        if m == 0 {
+            for (i, num) in nums1.iter_mut().enumerate() {
+                *num = nums2[i];
+            }
+            return;
         }
 
-        let mut new_digits = vec![0; digits.len()];
-        new_digits[p] = num;
-        p -= 1;
 
-        for _ in 1..digits.len() {
-            let mut num = digits[p];
-            if tens != 0 {
-                num += tens;
-                tens = 0;
-            }
-            if num >= 10 {
-                tens += 1;
-                num %= 10;
-            }
-            new_digits[p] = num;
-            if p != 0{
-                p = p.saturating_sub(1);
-            }
+        for i in 0..n as usize {
+            let num2 = nums2[i];
+            let last = m as usize + i;
+            nums1[last] = num2;
+            for j in 0..last {
+                if nums1[j] > nums1[last]{
+                    let tmp = nums1[j];
+                    nums1[j] = nums1[last];
+                    nums1[last] = tmp;
+                }
 
+            }
         }
-        if tens != 0 {
-            new_digits.insert(0, 1);
-        }
-
-        new_digits
     }
+
 
 }
 
