@@ -1,53 +1,40 @@
-use std::{cell::RefCell, rc::Rc};
 
 fn main() {
-    let nums = vec![-10,-3,0,5,9];
-
-    let a = Solution::sorted_array_to_bst(nums);
+    let num_rows = 5;
+    let a = Solution::generate(num_rows);
     println!("{a:?}");
-
 }
 
-#[derive(Debug, PartialEq, Eq)]
-pub struct TreeNode {
-    pub val: i32,
-    pub left: Option<Rc<RefCell<TreeNode>>>,
-    pub right: Option<Rc<RefCell<TreeNode>>>,
-}
-
-impl TreeNode {
-    #[inline]
-    pub fn new(val: i32) -> Self {
-        TreeNode {
-            val,
-            left: None,
-            right: None,
-        }
-    }
-
-}
 
 struct Solution;
 
 impl Solution {
-    pub fn solve(nums: &Vec<i32>, start: i32, end: i32)
-    -> Option<Rc<RefCell<TreeNode>>>{
-        if start > end {
-            return None;
+    pub fn generate(num_rows: i32)
+    -> Vec<Vec<i32>> {
+        if num_rows == 1 {
+            return vec![vec![1]];
         }
-        let mid = (end + start) / 2;
-
-        let root = Rc::new(RefCell::new(TreeNode::new(nums[mid as usize])));
-        root.borrow_mut().left = Solution::solve(nums, start, mid - 1);
-        root.borrow_mut().right = Solution::solve(nums, mid + 1, end);
-        Some(root)
-
-
+        if num_rows == 2 {
+           return vec![vec![1], vec![1, 1]]; 
+        }
+        let mut outer: Vec<Vec<i32>> = vec![vec![1], vec![1, 1]];
+        for i in 2..num_rows {
+            let prev_row = &outer[(i - 1) as usize];
+            let mut inner: Vec<i32> = vec![];
+            for j in 0..prev_row.len() {
+                if j + 1 > prev_row.len() - 1 {
+                    break;
+                }
+                let a = prev_row[j];
+                let b = prev_row[j + 1];
+                inner.push(a + b);
+            }
+            inner.insert(0, 1);
+            inner.push(1);
+            outer.push(inner);
+        }
+        outer
     }
-    pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
-        Solution::solve(&nums, 0, (nums.len() - 1) as i32)
 
-    }
-    
 }
 
