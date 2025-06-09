@@ -1,61 +1,53 @@
+use std::{cell::RefCell, rc::Rc};
 
 fn main() {
-    let mut nums1 = vec![4,5,6,0,0,0];
-    let mut nums2 = vec![1,2,3];
-    Solution::merge(&mut nums1,3, &mut nums2,3);
-    println!("nums1: {nums1:?}");
+    let nums = vec![-10,-3,0,5,9];
+
+    let a = Solution::sorted_array_to_bst(nums);
+    println!("{a:?}");
 
 }
-// 3,8,9,5,0,0
-// j     k
-// 3,8,9,5,0,0
-//   j   k
-// 3,5,9,8,0,0
-//   j   k
-// 3,5,9,8,0,0
-//     j k
-//     8 9,0,0
-//       j
-// 
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
+
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
+
+}
 
 struct Solution;
 
 impl Solution {
-    pub fn merge(
-        nums1: &mut Vec<i32>,
-        m: i32,
-        nums2: &mut Vec<i32>,
-        n: i32
-    ) {
-        if m == 0 {
-            for (i, num) in nums1.iter_mut().enumerate() {
-                *num = nums2[i];
-            }
-            return;
+    pub fn solve(nums: &Vec<i32>, start: i32, end: i32)
+    -> Option<Rc<RefCell<TreeNode>>>{
+        if start > end {
+            return None;
         }
+        let mid = (end + start) / 2;
+
+        let root = Rc::new(RefCell::new(TreeNode::new(nums[mid as usize])));
+        root.borrow_mut().left = Solution::solve(nums, start, mid - 1);
+        root.borrow_mut().right = Solution::solve(nums, mid + 1, end);
+        Some(root)
 
 
-        for i in 0..n as usize {
-            let num2 = nums2[i];
-            let last = m as usize + i;
-            nums1[last] = num2;
-            for j in 0..last {
-                if nums1[j] > nums1[last]{
-                    let tmp = nums1[j];
-                    nums1[j] = nums1[last];
-                    nums1[last] = tmp;
-                }
-
-            }
-        }
     }
+    pub fn sorted_array_to_bst(nums: Vec<i32>) -> Option<Rc<RefCell<TreeNode>>> {
+        Solution::solve(&nums, 0, (nums.len() - 1) as i32)
 
-
+    }
+    
 }
-
-// 9 -> 10
-// 99 -> 100
-// 299 -> 1000
-
-// 29 -> 30
 
