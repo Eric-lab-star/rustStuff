@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 
 fn main() {
-    let nums = vec![2,2,3];
-    let a = Solution::majority_element(nums);
+    let nums = vec![1,2,3,4];
+    let a = Solution::contains_duplicate(nums);
     println!("{a}");
 }
 
@@ -9,25 +11,17 @@ fn main() {
 struct Solution;
 
 impl Solution {
-    pub fn majority_element(nums: Vec<i32>)
-    -> i32 {
-        let mut score = 0;
-        let mut candidate = nums[1];
-
-        for num in nums {
-            if score == 0 {
-                candidate = num;
-            }
-
-            if candidate == num {
-                score += 1;
+    pub fn contains_duplicate(nums: Vec<i32>)
+    -> bool {
+        let mut map: HashMap<i32, i32> = HashMap::new();
+        for num in nums.iter() {
+            if map.contains_key(num) {
+                return true;
             } else {
-                score -= 1;
+                map.insert(*num, 1);
             }
         }
-
-        candidate
-
+        false
 
     }
 }
