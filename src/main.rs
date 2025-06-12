@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 
 fn main() {
     let nums = vec![2,2,3];
@@ -12,20 +11,23 @@ struct Solution;
 impl Solution {
     pub fn majority_element(nums: Vec<i32>)
     -> i32 {
-        if nums.len() < 2 {
-            return nums[0]
+        let mut score = 0;
+        let mut candidate = nums[1];
+
+        for num in nums {
+            if score == 0 {
+                candidate = num;
+            }
+
+            if candidate == num {
+                score += 1;
+            } else {
+                score -= 1;
+            }
         }
-        let mut map: HashMap<i32, i32> = HashMap::new(); 
-       for num in nums.iter() {
-           if let Some(v) = map.get_mut(num) {
-               *v += 1;
-               if *v > ((nums.len() as i32) / 2) {
-                   return *num
-               }
-           } else {
-               map.insert(*num, 1);
-           }
-       }
-       0
+
+        candidate
+
+
     }
 }
