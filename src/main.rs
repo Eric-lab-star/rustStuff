@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 fn main() {
-    let nums = vec![2,2,4,1,1];
-    let a = Solution::single_number(nums);
+    let nums = vec![2,2,3];
+    let a = Solution::majority_element(nums);
     println!("{a}");
 }
 
@@ -10,16 +10,22 @@ fn main() {
 struct Solution;
 
 impl Solution {
-    pub fn single_number(nums: Vec<i32>)
+    pub fn majority_element(nums: Vec<i32>)
     -> i32 {
-       let mut numbers_map: HashMap<i32, i32> = HashMap::new(); 
+        if nums.len() < 2 {
+            return nums[0]
+        }
+        let mut map: HashMap<i32, i32> = HashMap::new(); 
        for num in nums.iter() {
-           if !numbers_map.contains_key(num){
-               numbers_map.insert(*num, 1);
+           if let Some(v) = map.get_mut(num) {
+               *v += 1;
+               if *v > ((nums.len() as i32) / 2) {
+                   return *num
+               }
            } else {
-               numbers_map.remove(num);
+               map.insert(*num, 1);
            }
        }
-       nums.iter().fold(0, |acc, cur| acc ^ cur)
+       0
     }
 }
