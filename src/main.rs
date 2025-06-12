@@ -1,27 +1,25 @@
-fn main() {
-    let prices = vec![7,1,5,3,6,4];
-    let a = Solution::max_profit(prices);
-    println!("{a}");
+use std::collections::HashMap;
 
+fn main() {
+    let nums = vec![2,2,4,1,1];
+    let a = Solution::single_number(nums);
+    println!("{a}");
 }
 
 
 struct Solution;
 
 impl Solution {
-    pub fn max_profit(prices: Vec<i32>) -> i32 {
-        let mut buy = prices[0];
-        let mut profit = 0;
-
-        for &price in prices.iter().skip(1) {
-            if price < buy {
-                buy = price; 
-            } else if price - buy > profit {
-                profit = price - buy;
-            }
-        }
-        profit
-        
+    pub fn single_number(nums: Vec<i32>)
+    -> i32 {
+       let mut numbers_map: HashMap<i32, i32> = HashMap::new(); 
+       for num in nums.iter() {
+           if !numbers_map.contains_key(num){
+               numbers_map.insert(*num, 1);
+           } else {
+               numbers_map.remove(num);
+           }
+       }
+       nums.iter().fold(0, |acc, cur| acc ^ cur)
     }
 }
-
