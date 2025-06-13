@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
+
 
 
 fn main() {
@@ -13,15 +14,7 @@ struct Solution;
 impl Solution {
     pub fn contains_duplicate(nums: Vec<i32>)
     -> bool {
-        let mut map: HashMap<i32, i32> = HashMap::new();
-        for num in nums.iter() {
-            if map.contains_key(num) {
-                return true;
-            } else {
-                map.insert(*num, 1);
-            }
-        }
-        false
-
+        let mut exists = HashSet::new();
+        !nums.iter().all(|n| exists.insert(n))
     }
 }
