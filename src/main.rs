@@ -1,10 +1,9 @@
-use std::collections::HashSet;
-
+use std::collections::HashMap;
 
 
 fn main() {
-    let nums = vec![1,2,3,4];
-    let a = Solution::contains_duplicate(nums);
+    let nums = vec![99,99];
+    let a = Solution::contains_nearby_duplicate(nums, 2);
     println!("{a}");
 }
 
@@ -12,9 +11,13 @@ fn main() {
 struct Solution;
 
 impl Solution {
-    pub fn contains_duplicate(nums: Vec<i32>)
-    -> bool {
-        let mut exists = HashSet::new();
-        !nums.iter().all(|n| exists.insert(n))
+    pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
+       let mut last_index = HashMap::new();
+       for (i, num) in nums.iter().enumerate() {
+           if matches!(last_index.insert(num, i), Some(j) if i.abs_diff(j) <= k as usize ){
+               return true;
+           }
+       }
+       false
     }
 }
