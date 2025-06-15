@@ -15,13 +15,9 @@ impl Solution {
         let mut not_zero = 0; 
         for j in 0..nums.len() {
             if nums[j] != 0 {
-                nums[not_zero] = nums[j];
+                nums.swap(not_zero, j);
                 not_zero += 1;
             }
         }
-        for el in nums.iter_mut().skip(not_zero) {
-            *el = 0;
-        }
     }
-    
 }
