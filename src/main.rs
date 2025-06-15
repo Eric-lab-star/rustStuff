@@ -1,8 +1,8 @@
-// Summary Ranges
+// Missing Number
 
 fn main() {
-    let nums = vec![];
-    let ans = Solution::summary_ranges(nums);
+    let nums = vec![9,6,4,2,3,5,7,0,1];
+    let ans = Solution::missing_number(nums);
     println!("{ans:?}");
 }
 
@@ -10,34 +10,15 @@ fn main() {
 struct Solution;
 
 impl Solution {
-    pub fn summary_ranges(nums: Vec<i32>) -> Vec<String> {
-        if nums.is_empty() {
-            return vec![];
+    pub fn missing_number(nums: Vec<i32>)
+    -> i32 {
+        let expect: i32 = (((nums.len() as i32) + 1) * nums.len() as i32)/2;
+        let mut sum: i32 = 0;
+        for num in nums {
+            sum += num;
         }
-        let mut start: i32 = nums[0];
-        let mut ans: Vec<String> = vec![];
-        if nums.len() < 2 {
-            ans.push(format!("{start}"));
-            return ans;
-        }
-
-        for (i, &num) in nums.iter().enumerate().skip(1) {
-            if num != nums[i - 1] + 1 {
-                if start == nums[i - 1] {
-                    ans.push(format!("{start}"));
-                } else {
-                    ans.push(format!("{start}->{}", nums[i - 1]));
-                }
-                start = nums[i];
-            }
-            if i == nums.len() - 1 {
-                if start != nums[i] {
-                    ans.push(format!("{start}->{}", nums[i]));
-                } else {
-                    ans.push(format!("{start}"));
-                } 
-            }
-        }
-        ans
+        expect - sum
     }
 }
+
+
