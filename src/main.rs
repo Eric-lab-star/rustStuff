@@ -12,12 +12,9 @@ struct Solution;
 impl Solution {
     pub fn missing_number(nums: Vec<i32>)
     -> i32 {
-        let expect: i32 = (((nums.len() as i32) + 1) * nums.len() as i32)/2;
-        let mut sum: i32 = 0;
-        for num in nums {
-            sum += num;
-        }
-        expect - sum
+        nums.into_iter()
+            .enumerate()
+            .fold(0, |acc, (i, x)| acc ^ (i + 1) as i32 ^ x)
     }
 }
 
