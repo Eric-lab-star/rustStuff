@@ -1,23 +1,33 @@
-// Move Zeros
+// Range Sum Query - Immutable
 
 fn main() {
-    let mut nums: Vec<i32> = vec![0,1,0,3,12];
-    Solution::move_zeroes(&mut nums);
-    println!("{nums:?}");
+    let nums = vec![-2, 0, 3, -5, 2, -1];
+    let obj = NumArray::new(nums);
+    let ret_1 = obj.sum_range(2, 5);
+    println!("{ret_1}");
 
 }
 
+#[derive(Debug)]
+struct NumArray {
+    nums: Vec<i32>
+}
 
-struct Solution;
-
-impl Solution {
-    pub fn move_zeroes(nums: &mut Vec<i32>) {
-        let mut not_zero = 0; 
-        for j in 0..nums.len() {
-            if nums[j] != 0 {
-                nums.swap(not_zero, j);
-                not_zero += 1;
-            }
+impl NumArray {
+    fn new(nums: Vec<i32>) -> Self {
+        NumArray {
+            nums 
         }
     }
+
+    fn sum_range(&self, left: i32, right: i32) -> i32 {
+        self.nums[left as usize..=right as usize].iter().sum()
+    }
 }
+
+
+// struct Solution;
+//
+// impl Solution {
+//     
+// }
