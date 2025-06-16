@@ -1,33 +1,32 @@
-// Range Sum Query - Immutable
+// Intersection of Two Arrays 
+
+use std::collections::HashSet;
 
 fn main() {
-    let nums = vec![-2, 0, 3, -5, 2, -1];
-    let obj = NumArray::new(nums);
-    let ret_1 = obj.sum_range(2, 5);
-    println!("{ret_1}");
+    let nums1 = vec![4,9,5]; 
+    let nums2 = vec![9,4,9,8,4];
+    let ans = Solution::intersection(nums1, nums2);
+    println!("{ans:?}");
 
 }
 
-#[derive(Debug)]
-struct NumArray {
-    nums: Vec<i32>
-}
 
-impl NumArray {
-    fn new(nums: Vec<i32>) -> Self {
-        NumArray {
-            nums 
+struct Solution;
+
+impl Solution {
+    pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>)
+    -> Vec<i32> {
+        let mut res: Vec<i32> = vec![];
+        let mut set: HashSet<i32> = HashSet::new();
+        for num in nums1 {
+            set.insert(num);
         }
+        for num2 in nums2 {
+            if !set.insert(num2) && !res.contains(&num2) {
+                res.push(num2);
+            }
+        }
+        res
     }
 
-    fn sum_range(&self, left: i32, right: i32) -> i32 {
-        self.nums[left as usize..=right as usize].iter().sum()
-    }
 }
-
-
-// struct Solution;
-//
-// impl Solution {
-//     
-// }
