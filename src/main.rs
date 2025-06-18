@@ -1,6 +1,5 @@
 //  Assign Cookies
 
-use std::collections::BinaryHeap;
 
 
 fn main() {
@@ -14,18 +13,21 @@ fn main() {
 struct Solution;
 
 impl Solution {
-   pub fn find_content_children(g: Vec<i32>, s: Vec<i32>) -> i32 {
-       let mut ret = 0;
-       let mut heap_g = BinaryHeap::from_iter(g);
-       let mut heap_s = BinaryHeap::from_iter(s);
-       while let Some(max_g) = heap_g.pop() {
-           if let Some(&max_s) = heap_s.peek() {
-               if max_s >= max_g {
-                   ret += 1;
-                   heap_s.pop();
-               }
+   pub fn find_content_children(mut g: Vec<i32>, mut s: Vec<i32>) -> i32 {
+       g.sort();
+       s.sort();
+
+       let mut gi = 0;
+       let mut si = 0;
+       loop {
+           if si >= s.len() || gi >= g.len() {
+               break;
            }
+           if g[gi] <= s[si] {
+               gi += 1;
+           }
+           si += 1;
        }
-       ret
+       gi as i32
    } 
 }
