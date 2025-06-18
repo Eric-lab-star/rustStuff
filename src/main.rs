@@ -1,26 +1,31 @@
-// Find All Numbers Diappeared in an Array 
+//  Assign Cookies
 
-use std::collections::HashSet;
+use std::collections::BinaryHeap;
+
 
 fn main() {
-    let nums = vec![4,3,2,7,8,2,3,1];
-    let ans = Solution::find_disappeared_numbers(nums);
-    println!("{ans:?}");
+    let g = vec![1,2];
+    let s = vec![1,2,3];
+    let ans = Solution::find_content_children(g, s);
+    println!("{ans}");
 }
 
 
 struct Solution;
 
 impl Solution {
-    pub fn find_disappeared_numbers(nums: Vec<i32>) -> Vec<i32> {
-        let len = nums.len() + 1;
-        let set: HashSet<i32> = nums.into_iter().collect();
-        let mut ret = vec![];
-        for i in 1..len {
-            if !set.contains(&(i as i32)) {
-                ret.push(i as i32);
-            }
-        }
-        ret
-    }
+   pub fn find_content_children(g: Vec<i32>, s: Vec<i32>) -> i32 {
+       let mut ret = 0;
+       let mut heap_g = BinaryHeap::from_iter(g);
+       let mut heap_s = BinaryHeap::from_iter(s);
+       while let Some(max_g) = heap_g.pop() {
+           if let Some(&max_s) = heap_s.peek() {
+               if max_s >= max_g {
+                   ret += 1;
+                   heap_s.pop();
+               }
+           }
+       }
+       ret
+   } 
 }
