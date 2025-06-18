@@ -1,9 +1,9 @@
 // Third Maximum Number
 
-use std::collections::HashSet;
+use std::collections::{BinaryHeap, HashSet};
 
 fn main() {
-    let nums = vec![0,2];
+    let nums = vec![3,2,1];
     let a = Solution::third_max(nums);
     println!("{a}");
 }
@@ -13,12 +13,13 @@ struct Solution;
 impl Solution {
     pub fn third_max(nums: Vec<i32>) -> i32 {
         let set: HashSet<i32> = nums.into_iter().collect();
-        let mut sorted:Vec<i32> = set.into_iter().collect();
-        sorted.sort_by(|a,b| b.cmp(a));
-        println!("{sorted:?}");
-        if sorted.len() >= 3 {
-            return sorted[2]; }
-        sorted[0]
-
+        let mut heap = BinaryHeap::from_iter(set);
+        if heap.len() >= 3 {
+            heap.pop();
+            heap.pop();
+            heap.pop().unwrap_or(0)
+        } else {
+            heap.pop().unwrap_or(0)
+        }
     }
 }
