@@ -1,25 +1,24 @@
-// Intersection of Two Arrays 
+// Third Maximum Number
 
 use std::collections::HashSet;
 
 fn main() {
-    let nums1 = vec![4,7,9,7,6,7]; 
-    let nums2 = vec![5,0,0,6,1,6,2,2,4];
-    let ans = Solution::intersection(nums1, nums2);
-    println!("{ans:?}");
-
+    let nums = vec![0,2];
+    let a = Solution::third_max(nums);
+    println!("{a}");
 }
-
 
 struct Solution;
 
 impl Solution {
-    pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>)
-    -> Vec<i32> {
-        let set1: HashSet<i32> = nums1.into_iter().collect();
-        let set2: HashSet<i32> = nums2.into_iter().collect();
-        let ans:Vec<i32> = set1.intersection(&set2).copied().collect();
-        ans
-    }
+    pub fn third_max(nums: Vec<i32>) -> i32 {
+        let set: HashSet<i32> = nums.into_iter().collect();
+        let mut sorted:Vec<i32> = set.into_iter().collect();
+        sorted.sort_by(|a,b| b.cmp(a));
+        println!("{sorted:?}");
+        if sorted.len() >= 3 {
+            return sorted[2]; }
+        sorted[0]
 
+    }
 }
