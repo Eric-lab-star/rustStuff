@@ -1,25 +1,26 @@
-// Third Maximum Number
+// Find All Numbers Diappeared in an Array 
 
-use std::collections::{BinaryHeap, HashSet};
+use std::collections::HashSet;
 
 fn main() {
-    let nums = vec![3,2,1];
-    let a = Solution::third_max(nums);
-    println!("{a}");
+    let nums = vec![4,3,2,7,8,2,3,1];
+    let ans = Solution::find_disappeared_numbers(nums);
+    println!("{ans:?}");
 }
+
 
 struct Solution;
 
 impl Solution {
-    pub fn third_max(nums: Vec<i32>) -> i32 {
+    pub fn find_disappeared_numbers(nums: Vec<i32>) -> Vec<i32> {
+        let len = nums.len() + 1;
         let set: HashSet<i32> = nums.into_iter().collect();
-        let mut heap = BinaryHeap::from_iter(set);
-        if heap.len() >= 3 {
-            heap.pop();
-            heap.pop();
-            heap.pop().unwrap_or(0)
-        } else {
-            heap.pop().unwrap_or(0)
+        let mut ret = vec![];
+        for i in 1..len {
+            if !set.contains(&(i as i32)) {
+                ret.push(i as i32);
+            }
         }
+        ret
     }
 }
