@@ -1,33 +1,24 @@
-//  Assign Cookies
-
-
+// teemo attacking 
 
 fn main() {
-    let g = vec![1,2];
-    let s = vec![1,2,3];
-    let ans = Solution::find_content_children(g, s);
-    println!("{ans}");
+   let timeSeries = vec![1,4];
+   let duration = 2; 
+   let ans = Solution::find_poisoned_duration(timeSeries, duration);
+   println!("{ans}");
 }
-
 
 struct Solution;
 
 impl Solution {
-   pub fn find_content_children(mut g: Vec<i32>, mut s: Vec<i32>) -> i32 {
-       g.sort();
-       s.sort();
+    pub fn find_poisoned_duration(time_series: Vec<i32>, duration: i32) -> i32 {
+        time_series.iter().enumerate().skip(1).fold(duration, |acc, (index, &time)| {
+            let interval = time - time_series[index - 1];
+            if interval > duration {
+                duration + acc
+            } else {
+                interval + acc
+            }
+        })
 
-       let mut gi = 0;
-       let mut si = 0;
-       loop {
-           if si >= s.len() || gi >= g.len() {
-               break;
-           }
-           if g[gi] <= s[si] {
-               gi += 1;
-           }
-           si += 1;
-       }
-       gi as i32
-   } 
+    }
 }
